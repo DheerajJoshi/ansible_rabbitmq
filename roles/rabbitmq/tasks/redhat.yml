@@ -1,0 +1,24 @@
+---
+
+- name: RABBITMQ REDHAT | Install prerequisites
+  package:
+    name: erlang
+    state: present
+
+- name: RABBITMQ REDHAT | Import key
+  rpm_key:
+    key: "{{ rabbitmq_yum_key }}"
+    state: present
+
+- name: RABBITMQ REDHAT | Installation
+  yum:
+    name:  "{{ rabbitmq_yum_rpm }}"
+    state: present
+  notify: Restart rabbitmq
+
+- name: RABBITMQ REDHAT | Manage Firewalld
+  firewalld:
+    service: "{{ item }}"
+    permanent: yes
+    state: enabled
+  with_items: "{{ rabbitmq_firewalld }}"

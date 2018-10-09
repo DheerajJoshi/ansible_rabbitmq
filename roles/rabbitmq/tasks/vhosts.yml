@@ -1,0 +1,7 @@
+---
+
+- name: RABBITMQ VHOST | Manage vhost deployment
+  rabbitmq_vhost:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ rabbitmq_vhosts }}"

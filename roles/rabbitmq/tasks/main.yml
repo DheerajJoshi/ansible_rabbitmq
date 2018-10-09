@@ -1,0 +1,21 @@
+---
+
+- name: RABBITMQ | Manage Debian environment
+  include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: RABBITMQ | Manage RedHat environment
+  include: redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: RABBITMQ | Manage Users
+  import_tasks: users.yml
+  when: rabbitmq_users is defined
+
+- name: Ensure the vhosts is present
+  import_tasks: vhosts.yml
+  when: rabbitmq_vhost is defined
+
+- name: RABBITMQ | Manage plugins
+  import_tasks: plugins.yml
+  when: rabbitmq_plugins is defined

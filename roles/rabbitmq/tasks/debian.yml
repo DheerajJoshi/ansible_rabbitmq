@@ -1,0 +1,19 @@
+---
+
+- name: RABBITMQ DEBIAN | Add repository key
+  apt_key:
+    url: "{{ rabbitmq_apt_key }}"
+    state: present
+    id: 6026DFCA
+
+- name: RABBITMQ DEBIAN | Add repository
+  apt_repository:
+    repo: "{{ rabbitmq_apt_repository }}"
+    state: present
+    update_cache: yes
+
+- name: RABBITMQ DEBIAN | Installation
+  package:
+    name: rabbitmq-server={{ rabbitmq_version }}*
+    state: present
+  notify: Restart rabbitmq

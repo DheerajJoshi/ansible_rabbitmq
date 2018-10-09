@@ -1,0 +1,47 @@
+---
+
+###
+# RABBITMQ
+###
+
+# Version
+rabbitmq_version: 3.6.15
+
+# Debian
+rabbitmq_apt_key: https://www.rabbitmq.com/rabbitmq-release-signing-key.asc
+rabbitmq_apt_repository: "deb http://www.rabbitmq.com/debian/ testing main"
+
+# Redhat
+rabbitmq_yum_key: https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+rabbitmq_yum_rpm: https://github.com/rabbitmq/rabbitmq-server/releases/download/rabbitmq_v{{ rabbitmq_version }}/rabbitmq-server-{{ rabbitmq_version }}-1.noarch.rpm
+
+# Plugins
+rabbitmq_plugins:
+  - name: rabbitmq_management
+    state: enabled
+
+# Users
+rabbitmq_users:
+  - user: "admin"
+    password: "admin"
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    tags: administrator
+    state: present
+  - user: guest
+    state: absent
+
+# Vhost
+rabbitmq_vhosts: []
+
+# Ports
+rabbitmq_firewalld:
+  - 4369          # (epmd)
+  - 25672         # (Erlang distribution)
+  - 5671-5672     # (AMQP 0-9-1 without and with TLS)
+  - 15672         # (if management plugin is enabled)
+  - 61613-61614   # (if STOMP is enabled)
+  - 1883          # (if MQTT is enabled)
+  - 8883          # (if MQTT is enabled)

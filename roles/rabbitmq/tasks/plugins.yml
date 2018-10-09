@@ -1,0 +1,9 @@
+---
+
+- name: RABBITMQ PLUGINS | MAnage plugins installation
+  rabbitmq_plugin:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    prefix: /usr/lib/rabbitmq
+  with_items: "{{ rabbitmq_plugins }}"
+  notify: Restart rabbitmq
